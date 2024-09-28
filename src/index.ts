@@ -8,6 +8,11 @@ app.get('/', (c) => {
   return c.text('Hello Hono!')
 })
 
+app.get('/up', (c) => {
+  c.status(200)
+  return c.text("Healthcheck OK!")
+})
+
 app.use('/static/*', serveStatic({ root: './' }))
 
 const port = 3000
