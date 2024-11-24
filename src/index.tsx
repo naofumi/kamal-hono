@@ -35,7 +35,12 @@ const Layout = (props: { children: any }) => html`
   </head>
   <body>
   <div class="p-4">
-    <h1 class="text-4xl font-bold mb-4"><a href="/">Todo</a></h1>
+    <div class="flex justify-between">
+      <h1 class="text-4xl font-bold mb-4"><a href="/">Todo</a></h1>
+      <form method="post" action="/restore" data-turbo-confirm="データを初期状態に戻します。よろしいですか？">
+        <button class="text-red-600">Restore</button>
+      </form>
+    </div>
     <p class="text-lg mb-4">
       Example application based on <a href="https://blog.yusu.ke/hono-htmx-cloudflare/" class="underline hover:text-blue-600">
       Yusuke Wada "Hono + htmx + Cloudflare is a new stack"</a>
@@ -130,6 +135,12 @@ app.post('/delete/:id', async (c) => {
   return c.body(
     (<turbo-stream action="remove" target={`todo_${id}`}></turbo-stream>).toString()
   )
+})
+
+app.post('/restore', async (c) => {
+  db.prepare("DELETE FROM todos;").run()
+  db.prepare("INSERT INTO todos (title) VALUES ('皿を洗う'), ('洗濯物を取り込む'), ('猫に餌をやる');").run()
+  return c.redirect("/")
 })
 
 const port = 3000
