@@ -43,7 +43,10 @@ const Layout = (props: { children: any }) => html`
     </div>
     <p class="text-lg mb-4">
       Example application based on <a href="https://blog.yusu.ke/hono-htmx-cloudflare/" class="underline hover:text-blue-600">
-      Yusuke Wada "Hono + htmx + Cloudflare is a new stack"</a>
+      Yusuke Wada's "Hono + htmx + Cloudflare is a new stack"</a>
+    </p>
+    <p class="text-lg mb-4">
+      Code is available on <a href="https://github.com/naofumi/kamal-hono" class="underline hover:text-blue-600">GitHub</a>.
     </p>
     <p class="text-lg mb-4">
       Using Hotwire (Turbo + Stimulus) instead of htmx.
