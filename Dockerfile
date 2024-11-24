@@ -2,7 +2,7 @@ FROM node:20-alpine AS base
 
 FROM base AS builder
 
-RUN apk add --no-cache gcompat
+RUN apk add --no-cache gcompat sqlite
 WORKDIR /app
 
 COPY package*json tsconfig.json src ./
@@ -21,7 +21,12 @@ COPY --from=builder --chown=hono:nodejs /app/node_modules /app/node_modules
 COPY --from=builder --chown=hono:nodejs /app/dist /app/dist
 COPY --from=builder --chown=hono:nodejs /app/package.json /app/package.json
 
-COPY ./static/ /app/static/
+COPY --chown=hono:nodejs ./static/ /app/static/
+
+RUN mkdir /db
+RUN chown hono:nodejs /db
+COPY --chown=hono:nodejs ./db/db.sqlite /app/db/db.sqlite
+COPY --chown=hono:nodejs ./db/db.sqlite-wal /app/db/db.sqlite-wal
 
 USER hono
 EXPOSE 3000

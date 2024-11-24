@@ -27,3 +27,5 @@ lerna-debug.log*
 # misc
 .DS_Store
 /.kamal/registry_password.key
+/db.sqlite-shm
+/db/db.sqlite-shm
