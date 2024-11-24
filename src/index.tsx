@@ -78,6 +78,12 @@ type Todo = {
   id: string
 }
 
+// Healthcheck
+app.get('/up', (c) => {
+  c.status(200)
+  return c.text("Healthcheck OK!")
+})
+
 app.get('/', (c) => {
   const todos = db.prepare("SELECT * FROM todos").all() as Todo[]
   return(c.html(<Layout>
