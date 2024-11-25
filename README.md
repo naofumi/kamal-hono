@@ -7,6 +7,8 @@
   * DB is local SQLite instead of Cloudflare D1
   * A "Restore" button is provided in the UI to re-seed the database.
 
+https://github.com/user-attachments/assets/95f54358-14fb-4a0c-bda3-0fc3326a6dec
+
 ## Local development
 
 ```
