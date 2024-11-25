@@ -43,7 +43,7 @@ app.post(
       title: z.string().min(1)
     })
   ),
-  async (c) => {
+  (c) => {
     const {title} = c.req.valid('form')
     const info = db.prepare(`INSERT INTO todos(title)
                              VALUES (?);`).bind(title).run()
@@ -60,7 +60,7 @@ app.post(
   }
 )
 
-app.post('/delete/:id', async (c) => {
+app.post('/delete/:id', (c) => {
   const id = c.req.param('id')
   db.prepare(`DELETE
               FROM todos
@@ -71,7 +71,7 @@ app.post('/delete/:id', async (c) => {
   )
 })
 
-app.post('/restore', async (c) => {
+app.post('/restore', (c) => {
   db.prepare("DELETE FROM todos;").run()
   db.prepare("INSERT INTO todos (title) VALUES ('皿を洗う'), ('洗濯物を取り込む'), ('猫に餌をやる');").run()
   return c.redirect("/")
