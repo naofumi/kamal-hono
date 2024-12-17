@@ -9,6 +9,7 @@ import {createClient} from '@libsql/client'
 import {AddTodo, Item, Layout} from "./components.js"
 import {todosTable} from "./db/schema.js"
 import {eq} from "drizzle-orm"
+import books from "./books/index.js"
 
 dotenv.config()
 
@@ -21,6 +22,7 @@ const db = drizzle({client})
 
 const app = new Hono()
 app.use('/static/*', serveStatic({root: './'}))
+app.route("/books", books)
 
 type Todo = {
   title: string
