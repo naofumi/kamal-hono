@@ -65,7 +65,7 @@ export const AddTodo = () => (
   </form>
 )
 
-export const Item = ({title, id}: { title: string; id: string }) => (
+export const Item = ({title, id}: { title: string; id: number }) => (
   <div id={`todo_${id}`}
        class="flex row items-center justify-between py-1 px-4 my-1 rounded-lg text-lg border bg-gray-100 text-gray-600 mb-2">
     <div>{title}</div>
