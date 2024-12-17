@@ -4,7 +4,7 @@ import {z} from 'zod'
 import {zValidator} from '@hono/zod-validator'
 import {serveStatic} from '@hono/node-server/serve-static'
 import Database from "better-sqlite3"
-import {AddTodo, Item, Layout} from "./components"
+import {AddTodo, Item, Layout} from "./components.js"
 
 const db = new Database("db/db.sqlite")
 db.pragma('journal_mode = WAL')
