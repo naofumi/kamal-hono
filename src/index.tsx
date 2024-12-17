@@ -1,6 +1,7 @@
 import {serve} from '@hono/node-server'
 import dotenv from 'dotenv'
 import {Hono} from 'hono'
+import {compress} from 'hono/compress'
 import {z} from 'zod'
 import {zValidator} from '@hono/zod-validator'
 import {serveStatic} from '@hono/node-server/serve-static'
@@ -21,6 +22,7 @@ await client.execute('PRAGMA journal_mode = WAL;');
 const db = drizzle({client})
 
 const app = new Hono()
+app.use(compress())
 app.use('/static/*', serveStatic({root: './'}))
 app.route("/books", books)
 
