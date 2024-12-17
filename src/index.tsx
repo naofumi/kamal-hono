@@ -1,13 +1,23 @@
 import {serve} from '@hono/node-server'
+import dotenv from 'dotenv'
 import {Hono} from 'hono'
 import {z} from 'zod'
 import {zValidator} from '@hono/zod-validator'
 import {serveStatic} from '@hono/node-server/serve-static'
-import Database from "better-sqlite3"
+import {drizzle} from 'drizzle-orm/libsql'
+import {createClient} from '@libsql/client'
 import {AddTodo, Item, Layout} from "./components.js"
+import {todosTable} from "./db/schema.js"
+import {eq} from "drizzle-orm"
 
-const db = new Database("db/db.sqlite")
-db.pragma('journal_mode = WAL')
+dotenv.config()
+
+const client = createClient({
+  url: `${process.env.DB_FILE_NAME || ""}`
+})
+await client.execute('PRAGMA journal_mode = WAL;');
+
+const db = drizzle({client})
 
 const app = new Hono()
 app.use('/static/*', serveStatic({root: './'}))
@@ -23,8 +33,8 @@ app.get('/up', (c) => {
   return c.text("Healthcheck OK!")
 })
 
-app.get('/', (c) => {
-  const todos = db.prepare("SELECT * FROM todos").all() as Todo[]
+app.get('/', async (c) => {
+  const todos = await db.select().from(todosTable)
   return (c.html(<Layout>
     <AddTodo/>
     <div id="todos">
@@ -43,37 +53,34 @@ app.post(
       title: z.string().min(1)
     })
   ),
-  (c) => {
+  async (c) => {
     const {title} = c.req.valid('form')
-    const info = db.prepare(`INSERT INTO todos(title)
-                             VALUES (?);`).bind(title).run()
-    const lastId = info.lastInsertRowid
+    const insertedTodos = await db.insert(todosTable).values({title}).returning()
     c.header("Content-Type", "text/vnd.turbo-stream.html")
     c.status(201)
     return (c.body(
       (<turbo-stream action="prepend" target="todos">
         <template>
-          <Item title={title} id={lastId.toString()}></Item>
+          <Item title={title} id={insertedTodos[0].id}></Item>
         </template>
       </turbo-stream>).toString()
     ))
   }
 )
 
-app.post('/delete/:id', (c) => {
-  const id = c.req.param('id')
-  db.prepare(`DELETE
-              FROM todos
-              WHERE id = ?;`).bind(id).run()
+app.post('/delete/:id', async (c) => {
+  const id = parseInt(c.req.param('id'))
+
+  await db.delete(todosTable).where(eq(todosTable.id, id))
   c.header("Content-Type", "text/vnd.turbo-stream.html")
   return c.body(
     (<turbo-stream action="remove" target={`todo_${id}`}></turbo-stream>).toString()
   )
 })
 
-app.post('/restore', (c) => {
-  db.prepare("DELETE FROM todos;").run()
-  db.prepare("INSERT INTO todos (title) VALUES ('皿を洗う'), ('洗濯物を取り込む'), ('猫に餌をやる');").run()
+app.post('/restore', async (c) => {
+  await db.delete(todosTable)
+  await db.insert(todosTable).values([{title: '皿を洗う'}, {title: '洗濯物を取り込む'}, {title: '猫に餌をやる'}])
   return c.redirect("/")
 })
 
