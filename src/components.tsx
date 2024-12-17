@@ -18,7 +18,7 @@ export const Layout = (props: { children: any }) => html`
         }
       })
     </script>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="/static/assets/application.css">
     <title>Hono + Hotwire</title>
   </head>
   <body>
