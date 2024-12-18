@@ -19,6 +19,7 @@ export const Layout = (props: { children: any }) => html`
       })
     </script>
     <link rel="stylesheet" href="/static/assets/application.css">
+    <link rel="shortcut icon" href="/static/favicon.ico" type="image/x-icon">
     <title>Hono + Hotwire</title>
   </head>
   <body>

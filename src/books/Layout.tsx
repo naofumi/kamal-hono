@@ -16,6 +16,7 @@ export default function Layout({children}: {children: any}) {
       <script src="/static/turbo.js" data-turbo-track="reload" type="module"></script>
       <script src="/static/application.js" data-turbo-track="reload" type="module"></script>
       <link rel="stylesheet" href="/static/assets/application.css">
+      <link rel="shortcut icon" href="/static/favicon.ico" type="image/x-icon">
       <title>Hono + Hotwire</title>
     </head>
     <body>
