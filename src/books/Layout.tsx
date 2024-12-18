@@ -6,13 +6,18 @@ export default function Layout({children}: {children: any}) {
     <html>
     <head>
       <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-      <script type="importmap">
+      <script type="importmap" data-turbo-track="reload">
         {
           "imports": {
             "stimulus": "/static/stimulus.js"
           }
         }
       </script>
+      <link rel="preload" href="/static/assets/application.css" as="style" />
+      <link rel="preload" href="/static/turbo.js" as="script" />
+      <link rel="preload" href="/static/stimulus.js" as="script" />
+      <link rel="preload" href="/static/application.js" as="script" />
+      <link rel="preload" href="/static/controllers/greetings_controller.js" as="script" />
       <script src="/static/turbo.js" data-turbo-track="reload" type="module"></script>
       <script src="/static/application.js" data-turbo-track="reload" type="module"></script>
       <link rel="stylesheet" href="/static/assets/application.css">
