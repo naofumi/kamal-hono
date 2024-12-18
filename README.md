@@ -37,3 +37,10 @@ SQLite database file with seed data has been committed to Git for convenience. W
 * Add digests to assets (including images) for cache busting.
 * Automate Stimulus controller generation
 * Automate import maps generation.
+
+## Goals
+
+* Provide a JSX-based platform for Hotwire.
+   * This allows writing type-safe HTML templates. 
+* Include niceties like asset digests that will be necessary if we use a CDN in production.
+* See if we can go no-build as well, although not a priority since build tools like esbuild are quite good.
