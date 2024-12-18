@@ -52,6 +52,10 @@ env:
 # aliases:
 #   shell: app exec --interactive --reuse "bash"
 
+aliases:
+  drizzle-push: app exec npx drizzle-kit push --dialect=sqlite --schema=./dist/db/schema.js --url=file:db/db.sqlite
+
+
 # Use a different ssh user than root
 #
 # ssh:
